@@ -1,6 +1,6 @@
 _home=/home/$(users)
 _target=myAlias
-
+_path=$_home
 
 function consumeFlags ()
 {
@@ -42,17 +42,19 @@ consumeFlags $@
 
 # Check if my Alias file is in path folder
 if !(ls $_path | grep $_target -q); then
-    echo "Added myAlias file to" $_path
     cp myAlias $_path
+    echo "Added myAlias file to" $_path
+elif ! cmp --silent myAlias $_path/myAlias; then
+        cp myAlias $_path
+        echo "myAlias file was updated"
 fi
 
 # Check if my Alias sourced in ~/.bashrc
 if !(cat $_home/.bashrc | grep $_target -q); then
-    echo "Added myAlias file to" $_home"/.bashrc"
-
-    echo " " > $_home/.bashrc
-    echo "# This line was added by the myAlias/setup.sh script." > $_home/.bashrc
-    echo "source" $_path/myAlias > $_home/.bashrc
+    echo " " >> $_home/.bashrc
+    echo "# This line was added by https://github.com/meister182/myAlias/setup.sh script." >> $_home/.bashrc
+    echo "source" $_path/myAlias >> $_home/.bashrc
+    echo "To update restart the terminal or run: source ~/.bashrc"
 fi
 
 echo "Done!"

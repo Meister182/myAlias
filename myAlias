@@ -31,8 +31,8 @@ function vcan_init (){
 }
 
 ####### Git:
-##------ gStatus [depth=5]c: Clear screen and show git Treetop, Stash and Status.
-function gStatus () {
+##------ Status [depth=5]c: Clear screen and show git Treetop, Stash and Status.
+function Status () {
 	clear
 
 	# Print out current ADP and machine uptime
