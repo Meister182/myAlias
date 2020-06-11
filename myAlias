@@ -35,9 +35,7 @@ function vcan_init (){
 function Status () {
 	clear
 
-	# Print out current ADP and machine uptime
-	ls ~/samba/views/ | grep AIVI_NIGHTLY | cut -d _ -f 3-8 | xargs -i printf "ADP: {}  | " 
-	uptime
+	uptime -p
 
 	if [ -d .git ]; then
 		#--- print out tree top
