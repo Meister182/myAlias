@@ -63,17 +63,17 @@ function Status () {
 	fi
 }
 
-##------ gch : git checkout
-alias gc='git checkout'
+##------ gSetup : Setup usefull alias for git
+function gSetup () {
+	git config --global alias.lg "log --oneline"
+	git config --global alias.lga "log --all --decorate --oneline --graph"
+	git config --global alias.clx "clean -fdx"
+	git config --global alias.set "push --force"
+	git config --global alias.join"commit --ammend --no-edit"
+}
 
-##------ ga : git add
-alias ga='git add'
-
-##------ gcom : git commit -m
-alias gcom='git commit -m'
-
-##------ gPurge : Resets and cleans EVERYTHING!!
-function gPurge () {
-    git reset --hard;
-    git clean -fdx;
+##------ gSetupUser : Setup local my local user
+function gSetupUser () {
+	git config --local user.name "Alexandre Marques"
+	git config --local user.email "c137.marques@gmail.com"
 }
