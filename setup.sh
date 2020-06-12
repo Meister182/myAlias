@@ -1,4 +1,5 @@
-_home=/home/$(users)
+#! /bin/bash
+_home=/home/$USER
 _target=myAlias
 _path=$_home
 
@@ -17,7 +18,11 @@ function consumeFlags ()
                 echo "       Display a brief description of this script in the terminal ."
                 echo " "
                 echo "  -p, --path [path/to/save/myAlias/file]"
-                echo "       Allows the user to specifie where to save the myAlias file."
+                echo "       Allows the user to specify where to save the myAlias file."
+                echo " "
+                echo "  -h, --home [path/to/.bashrc]"
+                echo "       In case the automatic detection of .bashrc filr fails, it"
+                echo "      allows the user to provide its path."
                 echo " "
                 echo " "
                 echo " "
@@ -25,13 +30,27 @@ function consumeFlags ()
             ;;
 
             -p |--path)
-                if ! [ -z ]$2 ]; then
+                if ! [ -z $2 ]; then
                     _path=$(readlink -f $2)
                 fi
             ;;
+
+            -h |--home)
+                if ! [ -z $2 ]; then
+                    _home=$(readlink -f $2)
+                fi
+            ;;
+
         esac
         shift
     done
+
+    if !(ls -a $_home | grep .bashrc -q); then
+        echo ".bashrc was not detected.. please provide a valid path to .bashrc file."
+        echo "Example:"
+        echo "  ./setup -h /home/user"
+        exit
+    fi
 }
 
 
@@ -54,7 +73,9 @@ if !(cat $_home/.bashrc | grep $_target -q); then
     echo " " >> $_home/.bashrc
     echo "# This line was added by https://github.com/meister182/myAlias/setup.sh script." >> $_home/.bashrc
     echo "source" $_path/myAlias >> $_home/.bashrc
-    echo "To update restart the terminal or run: source ~/.bashrc"
+    echo ""
+    echo "For changes to take effect restart the terminal or run: source ~/.bashrc"
+    echo "run myAlias to check the available alias"
 fi
 
 echo "Done!"
